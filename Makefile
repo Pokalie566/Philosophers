@@ -1,34 +1,67 @@
-# Makefile pour le projet Philosopher
-
-NAME = philo
-CC = gcc
+#-------------------------------------------------------CFLAGS---------------------------------------------------#
 CFLAGS = -Wall -Wextra -Werror -pthread
-SRC_DIR = src
-INCLUDE_DIR = includes
-OBJ_DIR = obj
 
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/philosopher.c $(SRC_DIR)/utils.c $(SRC_DIR)/monitor.c
-OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+#-------------------------------------------------------SRCS----------------------------------------------------#
+SRC = \
+	src/main.c \
+	src/philosopher.c \
+	src/utils.c \
+	src/monitor.c
 
-# Default target
+#-------------------------------------------------------OBJECTS--------------------------------------------------#
+OBJ = $(SRC:.c=.o)
+OBJ_PATH = obj/
+OBJS = $(addprefix $(OBJ_PATH), $(OBJ))
+
+#-------------------------------------------------------INCLUDES------------------------------------------------#
+INC_DIR = includes
+INCS = -I $(INC_DIR)
+
+#-------------------------------------------------------NAME-----------------------------------------------------#
+NAME = philo
+
+#-------------------------------------------------------COLORS--------------------------------------------------#
+BOLD = \033[1m
+RESET = \033[0m
+CYAN = \033[36m
+GREEN = \033[32m
+YELLOW = \033[33m
+RED = \033[31m
+DEFAULT = \033[39m
+
+#-------------------------------------------------------RULES---------------------------------------------------#
+
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
-# Create the executable
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(INCS) -o $(NAME) $(OBJS)
+	@echo "$(GREEN)>>> Philosopher is compiled ✅ <<<$(DEFAULT)"
 
-# Compile .c files to .o files in the obj directory
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/philo.h
-	@mkdir -p $(OBJ_DIR) # Ensure the obj directory exists
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+$(OBJ_PATH)%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(eval CURR_OBJ=$(shell echo $$(($(CURR_OBJ) + 1))))
+	@$(eval PERCENT=$(shell echo $$(($(CURR_OBJ) * 100 / $(words $(SRC))))))
+	@ \
+	if [ $(PERCENT) -lt 25 ]; then \
+		COLOR="$(RED)"; \
+	elif [ $(PERCENT) -lt 50 ]; then \
+		COLOR="$(YELLOW)"; \
+	elif [ $(PERCENT) -lt 75 ]; then \
+		COLOR="$(CYAN)"; \
+	else \
+		COLOR="$(GREEN)"; \
+	fi; \
+	printf "$${COLOR}($(BOLD)%3s%%$(RESET)$${COLOR})$(RESET) Compiling $(BOLD)$<$(RESET)\n" "$(PERCENT)"
+	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
-# Clean up object files
 clean:
-	rm -f $(OBJ)
+	@rm -rf $(OBJ_PATH)
+	@echo "$(YELLOW)>>> Philosopher is cleaned 🧹 <<<$(DEFAULT)"
 
-# Remove object files and the executable
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "$(RED)>>> Philosopher is fully cleaned 🧼 <<<$(DEFAULT)"
 
-# Rebuild everything
 re: fclean all
