@@ -6,37 +6,11 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:48 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/05 08:07:49 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 01:29:48 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	print_state(t_philo *philo, const char *state)
-{
-	long long	timestamp;
-
-	pthread_mutex_lock(&philo->data->print_lock);
-	timestamp = get_time() - philo->data->start_time;
-	if (!check_stop(philo->data))
-	{
-		printf("⌛ [%lld ms] Philosopher %d : ", timestamp, philo->id);
-		if (strcmp(state, "is thinking") == 0)
-			printf("🤔 Thinking...\n");
-		else if (strcmp(state, "is eating") == 0)
-			printf("🍽️ Enjoying a feast...\n");
-		else if (strcmp(state, "is sleeping") == 0)
-			printf("😴 Deeply asleep...\n");
-		else if (strcmp(state, "has taken the right fork") == 0)
-			printf("🍴 Has taken the right forks !\n");
-		else if (strcmp(state, "has taken the left fork") == 0)
-			printf("🍴 Has taken the left forks !\n");
-		else if (strcmp(state, "is dead") == 0)
-			printf("💀 Philosopher has died...\n");
-		printf("===========================================\n");
-	}
-	pthread_mutex_unlock(&philo->data->print_lock);
-}
 
 long long	get_time(void)
 {
@@ -86,4 +60,15 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (res * sign);
+}
+
+void	init_emojis(t_data *data)
+{
+	const char	*emojis[] = {
+		"🕛", "🕐", "🕑", "🕒", "🕓", "🕔",
+		"🕕", "🕖", "🕗", "🕘", "🕙", "🕚"
+	};
+
+	memcpy(data->clock_emojis, emojis, sizeof(emojis));
+	data->clock_index = 0;
 }

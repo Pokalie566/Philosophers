@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:39 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/05 08:07:40 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 01:30:20 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ struct s_data
 	t_philo			*philos;
 	long long		start_time;
 	pthread_t		monitor;
+	const char		*clock_emojis[12];
+	int				clock_index;
 };
 
 int			init_data(t_data *data, int argc, char **argv);
@@ -63,5 +65,6 @@ void		cleanup(t_data *data);
 int			ft_atoi(const char *str);
 int			check_stop(t_data *data);
 void		ft_sleep(long long ms);
+void		init_emojis(t_data *data);
 
 #endif

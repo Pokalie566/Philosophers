@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 04:21:55 by adeboose          #+#    #+#             */
-/*   Updated: 2025/01/29 04:37:05 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 01:29:56 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 
 int	init_data(t_data *data, int argc, char **argv)
 {
-	int	i;
+	int		i;
 
 	data->num_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
@@ -69,6 +69,8 @@ int	init_data(t_data *data, int argc, char **argv)
 		data->must_eat = ft_atoi(argv[5]);
 	data->stop = 0;
 	data->start_time = 0;
+	init_emojis(data);
+	data->clock_index = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philos);
 	data->philos = malloc(sizeof(t_philo) * data->num_philos);
 	if (!data->forks || !data->philos)

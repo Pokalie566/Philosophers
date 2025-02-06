@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 03:48:00 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/05 09:40:58 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 01:29:47 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&data->stop_lock);
 			return (NULL);
 		}
-		usleep(10);
+		ft_sleep(1);
 	}
 	return (NULL);
 }

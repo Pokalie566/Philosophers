@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:45 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/05 08:07:45 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 01:29:54 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 != 0)
+		ft_sleep(1);
 	if (philo->data->num_philos == 1)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -63,4 +65,32 @@ void	*philo_routine(void *arg)
 		print_state(philo, "is thinking");
 	}
 	return (NULL);
+}
+
+void	print_state(t_philo *philo, const char *state)
+{
+	long long	timestamp;
+
+	pthread_mutex_lock(&philo->data->print_lock);
+	timestamp = get_time() - philo->data->start_time;
+	if (!check_stop(philo->data))
+	{
+		printf("%s [%lld ms] Philosopher %d : ",
+			philo->data->clock_emojis[philo->data->clock_index % 12],
+			timestamp, philo->id);
+		philo->data->clock_index++;
+		if (strcmp(state, "is thinking") == 0)
+			printf("🤔 Thinking...\n");
+		else if (strcmp(state, "is eating") == 0)
+			printf("🍽️ Enjoying a feast...\n");
+		else if (strcmp(state, "is sleeping") == 0)
+			printf("😴 Deeply asleep...\n");
+		else if (strcmp(state, "has taken the right fork") == 0)
+			printf("🍴 Has taken the right forks !\n");
+		else if (strcmp(state, "has taken the left fork") == 0)
+			printf("🍴 Has taken the left forks !\n");
+		else if (strcmp(state, "is dead") == 0)
+			printf("💀 Philosopher has died...\n");
+	}
+	pthread_mutex_unlock(&philo->data->print_lock);
 }
