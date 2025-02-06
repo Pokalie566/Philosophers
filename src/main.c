@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 04:21:55 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/06 01:29:56 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 07:50:17 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	init_data(t_data *data, int argc, char **argv)
 		return (1);
 	pthread_mutex_init(&data->print_lock, NULL);
 	pthread_mutex_init(&data->stop_lock, NULL);
+	data->philos_completed = 0;
+	pthread_mutex_init(&data->meals_complete_lock, NULL);
 	i = 0;
 	while (i < data->num_philos)
 		pthread_mutex_init(&data->forks[i++], NULL);
@@ -92,6 +94,7 @@ void	cleanup(t_data *data)
 		pthread_mutex_destroy(&data->forks[i++]);
 	pthread_mutex_destroy(&data->print_lock);
 	pthread_mutex_destroy(&data->stop_lock);
+	pthread_mutex_destroy(&data->meals_complete_lock);
 	free(data->forks);
 	free(data->philos);
 }

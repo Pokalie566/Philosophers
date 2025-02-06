@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:45 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/06 01:29:54 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/06 08:05:59 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,37 @@ void	take_forks(t_philo *philo)
 void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_lock);
+	if (philo->data->must_eat != -1
+		&& philo->meals_eaten >= philo->data->must_eat)
+	{
+		pthread_mutex_unlock(&philo->meal_lock);
+		return ;
+	}
 	philo->last_meal = get_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal_lock);
 	print_state(philo, "is eating");
 	ft_sleep(philo->data->time_to_eat);
+	pthread_mutex_lock(&philo->data->meals_complete_lock);
+	if (philo->data->must_eat != -1
+		&& philo->meals_eaten >= philo->data->must_eat)
+	{
+		philo->data->philos_completed++;
+		pthread_mutex_lock(&philo->data->stop_lock);
+		if (philo->data->philos_completed >= philo->data->num_philos)
+			philo->data->stop = 1;
+		pthread_mutex_unlock(&philo->data->stop_lock);
+	}
+	pthread_mutex_unlock(&philo->data->meals_complete_lock);
 }
 
 void	*philo_routine(void *arg)
 {
-	t_philo	*philo;
+	t_philo		*philo;
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 != 0)
-		ft_sleep(1);
+		ft_sleep(philo->data->time_to_eat / 2);
 	if (philo->data->num_philos == 1)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -54,17 +71,33 @@ void	*philo_routine(void *arg)
 		ft_sleep(philo->data->time_to_die);
 		return (NULL);
 	}
+	philo_lifecycle(philo);
+	return (NULL);
+}
+
+void	philo_lifecycle(t_philo *philo)
+{
 	while (!check_stop(philo->data))
 	{
 		take_forks(philo);
 		philo_eat(philo);
+		pthread_mutex_lock(&philo->meal_lock);
+		if (philo->data->must_eat != -1
+			&& philo->meals_eaten >= philo->data->must_eat)
+		{
+			pthread_mutex_unlock(&philo->meal_lock);
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_unlock(philo->right_fork);
+			return ;
+		}
+		pthread_mutex_unlock(&philo->meal_lock);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 		print_state(philo, "is sleeping");
 		ft_sleep(philo->data->time_to_sleep);
 		print_state(philo, "is thinking");
+		ft_sleep(1);
 	}
-	return (NULL);
 }
 
 void	print_state(t_philo *philo, const char *state)
