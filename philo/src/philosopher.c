@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:45 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/26 15:28:51 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:50:49 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	print_state(t_philo *philo, const char *state)
 	if (!check_stop(philo->data))
 	{
 		printf("%s [%lld ms] Philosopher %d : ",
-			philo->data->clock_emojis[philo->data->clock_index % 12],
+			philo->data->clock_emojis[11 - (philo->data->clock_index % 12)],
 			timestamp, philo->id);
 		philo->data->clock_index++;
 		if (strcmp(state, "is thinking") == 0)
