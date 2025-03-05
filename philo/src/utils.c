@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:48 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/04 19:01:08 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:48:18 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,6 @@ long long	get_time(void)
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-void	ft_sleep(long long ms, t_data *data)
-{
-	long long		end_time;
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	end_time = (tv.tv_sec * 1000 + tv.tv_usec / 1000) + ms;
-	while ((tv.tv_sec * 1000 + tv.tv_usec / 1000) < end_time
-		&& !check_stop(data))
-	{
-		usleep(1);
-		gettimeofday(&tv, NULL);
-	}
-}
-
-int	check_stop(t_data *data)
-{
-	int	stop;
-
-	pthread_mutex_lock(&data->stop_lock);
-	stop = data->stop;
-	pthread_mutex_unlock(&data->stop_lock);
-	return (stop);
 }
 
 int	ft_atoi(const char *str)
@@ -75,6 +50,31 @@ void	init_emojis(t_data *data)
 		"🕕", "🕖", "🕗", "🕘", "🕙", "🕚"
 	};
 
-	memcpy(data->clock_emojis, emojis, sizeof(emojis));
+	ft_memcpy(data->clock_emojis, emojis, sizeof(emojis));
 	data->clock_index = 0;
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (dest == NULL && src == NULL && n != 0)
+		return (dest);
+	while (i < n)
+	{
+		*((unsigned char *)dest + i) = *((unsigned char *)src + i);
+		i++;
+	}
+	return (dest);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+		i++;
+	return (s1[i] - s2[i]);
 }

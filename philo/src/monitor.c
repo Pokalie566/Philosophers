@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 03:48:00 by adeboose          #+#    #+#             */
-/*   Updated: 2025/02/28 15:46:14 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:45:09 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,29 @@ void	*monitor(void *arg)
 		ft_sleep(1, data);
 	}
 	return (NULL);
+}
+
+void	ft_sleep(long long ms, t_data *data)
+{
+	long long		end_time;
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	end_time = (tv.tv_sec * 1000 + tv.tv_usec / 1000) + ms;
+	while ((tv.tv_sec * 1000 + tv.tv_usec / 1000) < end_time
+		&& !check_stop(data))
+	{
+		usleep(1);
+		gettimeofday(&tv, NULL);
+	}
+}
+
+int	check_stop(t_data *data)
+{
+	int	stop;
+
+	pthread_mutex_lock(&data->stop_lock);
+	stop = data->stop;
+	pthread_mutex_unlock(&data->stop_lock);
+	return (stop);
 }

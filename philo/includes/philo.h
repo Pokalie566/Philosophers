@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:39 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/04 19:38:57 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:49:39 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ void		cleanup(t_data *data);
 int			check_data(t_data *data, int argc);
 int			ft_atoi(const char *str);
 long long	get_time(void);
-void		print_state(t_philo *philo, const char *state);
+void		print_state(t_philo *philo, char *state);
 void		*philo_routine(void *arg);
 void		*monitor(void *arg);
 int			check_stop(t_data *data);
 void		ft_sleep(long long ms, t_data *data);
 void		init_emojis(t_data *data);
 void		philo_lifecycle(t_philo *philo);
+int			ft_strcmp(char *s1, char *s2);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
 
 #endif /* PHILO_H */
