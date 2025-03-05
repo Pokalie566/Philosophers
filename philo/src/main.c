@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 04:21:55 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/05 19:14:36 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:56:36 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char **argv)
 	memset(&data, 0, sizeof(t_data));
 	if (init_data(&data, argc, argv))
 		return (1);
+	init_emojis(&data);
 	if (check_data(&data, argc))
 		return (cleanup(&data), 1);
 	data.start_time = get_time();
@@ -67,10 +68,10 @@ int	init_data(t_data *data, int argc, char **argv)
 	data->must_eat = -1;
 	if (argc == 6)
 		data->must_eat = ft_atoi(argv[5]);
+	if (check_data(data, argc))
+		return (1);
 	data->stop = 0;
 	data->start_time = 0;
-	init_emojis(data);
-	data->clock_index = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philos);
 	data->philos = malloc(sizeof(t_philo) * data->num_philos);
 	if (!data->forks || !data->philos)
