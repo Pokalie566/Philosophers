@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:48 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/05 17:48:18 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:14:04 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,13 @@ int	ft_atoi(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		res = res * 10 + (*str - '0');
+		if ((sign == 1 && res > INT_MAX)
+			|| (sign == -1 && res * sign < INT_MIN))
+			return (-1);
 		str++;
 	}
+	if (*str != '\0')
+		return (-1);
 	return (res * sign);
 }
 

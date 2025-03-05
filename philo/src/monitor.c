@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 03:48:00 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/05 17:45:09 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:04:55 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_sleep(long long ms, t_data *data)
 	while ((tv.tv_sec * 1000 + tv.tv_usec / 1000) < end_time
 		&& !check_stop(data))
 	{
-		usleep(1);
+		usleep(100);
 		gettimeofday(&tv, NULL);
 	}
 }

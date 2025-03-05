@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 04:21:55 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/04 19:38:51 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:14:36 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 	if (init_data(&data, argc, argv))
 		return (1);
 	if (check_data(&data, argc))
-		return (1);
+		return (cleanup(&data), 1);
 	data.start_time = get_time();
 	init_philos(&data);
 	i = -1;
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 
 int	init_data(t_data *data, int argc, char **argv)
 {
-	int		i;
+	int	i;
 
 	data->num_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);

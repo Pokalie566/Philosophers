@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:39 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/05 17:49:39 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:12:06 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <string.h>
+# include <limits.h>
 
 /* ************************************************************************** */
 /*                                 Data Structures                            */

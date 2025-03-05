@@ -6,7 +6,7 @@
 /*   By: adeboose <adeboose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:07:45 by adeboose          #+#    #+#             */
-/*   Updated: 2025/03/05 17:50:03 by adeboose         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:14:26 by adeboose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*philo_routine(void *arg)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_state(philo, "has taken the left fork");
+		pthread_mutex_unlock(philo->left_fork);
 		ft_sleep(philo->data->time_to_die, philo->data);
 		return (NULL);
 	}
